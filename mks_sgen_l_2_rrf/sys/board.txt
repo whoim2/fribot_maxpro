@@ -22,16 +22,16 @@ heat.tempSensePins = {bedtemp, e0temp, e1temp}; //Max of 3 entries
 8266wifi.espDataReadyPin = 0.28;
 8266wifi.TfrReadyPin = 1.30;
 8266wifi.espResetPin = 1.31;
-//8266wifi.serialRxTxPins = {4.29, 4.28};
+8266wifi.serialRxTxPins = {4.29, 4.28};
 
 //TMC Smart Drivers
-stepper.numSmartDrivers = 3;
+stepper.numSmartDrivers = 4;
 stepper.TmcDiagPins = {1.29, 1.27, 1.25, 1.28, 1.26}
 
 // External Display settings
 serial.aux.rxTxPins = {0.3, 0.2};
 
 //power
-atx.powerPin = P0.26; //servo pin for power control
+atx.powerPin = P0.26;
 atx.initialPowerOn = 1;
 atx.powerPinInverted = 0;

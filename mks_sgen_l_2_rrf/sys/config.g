@@ -11,9 +11,6 @@ M550 P"FRIBOT Max Pro"                             ; set printer name
 M669 K1                                            ; select CoreXY mode
 
 ; Network
-M551 P"3363"                                       ; set password
-;M552 S0
-;M587 S"'w'i'f'i" P"37376338"
 M552 S1                                            ; enable network
 M586 P0 S1                                         ; enable HTTP
 M586 P1 S0                                         ; disable FTP
@@ -22,18 +19,18 @@ M586 P2 S0                                         ; disable Telnet
 ; Drives
 M569 P0 S0 D3 V30						           ; physical drive 0 goes forwards using default driver timings
 M569 P1 S0 D3 V30						           ; physical drive 1 goes forwards using default driver timings
-M569 P2 S1 D3 V300 						       	   ; physical drive 2 goes forwards using default driver timings
-M569 P3 S1 D2				                       ; physical drive 3 goes forwards using A4988 driver timings
-M569 P4 S1 D2					                   ; physical drive 4 goes forwards using A4988 driver timings
+M569 P2 S1 D2 						       	   ; physical drive 2 goes forwards using default driver timings
+M569 P3 S0 D3 V30					               ; physical drive 3 goes forwards using A4988 driver timings
+M569 P4 S0 D2					                   ; physical drive 4 goes forwards using A4988 driver timings
 M584 X0 Y1 Z2 E3:4                                 ; set drive mapping
-;M350 X256 Y256 Z64 E16:16 I0                         ; configure microstepping with interpolation
-;M92 X1280.00 Y1280.00 Z1280.00 E700.00:395.00			   ; set steps per mm
-M350 X64 Y64 Z64 E16:16 I0                         ; configure microstepping with interpolation
-M92 X320.00 Y320.00 Z1280.00 E700.00:395.00			   ; set steps per mm
-M566 X600.00 Y600.00 Z50.00 E120.00:120.00         ; set maximum instantaneous speed changes (mm/min)
+M350 X64 Y64 Z16 E64:64 I0                         ; configure microstepping with interpolation
+M92 X320.00 Y320.00 Z320.00 E2800.00:1580.00	   ; set steps per mm
+;M350 X16 Y16 Z16 E16:16 I0                         ; configure microstepping with interpolation
+;M92 X80.00 Y80.00 Z320.00 E700.00:395.00		   ; set steps per mm
+M566 X1200.00 Y1200.00 Z10.00 E300.00:300.00         ; set maximum instantaneous speed changes (mm/min)
 M203 X15000.00 Y15000.00 Z4000.00 E9000.00:9000.00 ; set maximum speeds (mm/min)
-M201 X3500.00 Y3500.00 Z150.00 E3000.00:3000.00	  ; set accelerations (mm/s^2)
-M906 X1500 Y1500 Z1300 I30                		   ; set motor currents (mA) and motor idle factor in per cent
+M201 X5000.00 Y5000.00 Z40.00 E3000.00:3000.00	   ; set accelerations (mm/s^2)
+M906 X1400 Y1400 Z1300 E300 I30                	   ; set motor currents (mA) and motor idle factor in per cent
 M84 S60                                            ; Set idle timeout
 
 ; Axis Limits
@@ -49,30 +46,30 @@ M574 Y1 S3         							       ; set endstops to use motor stall
 M574 Z2 S1 P"zstopmax"                             ; configure active-high endstop for high end on Z via pin zstopmax
 
 ; Z-Probe
-;M558 P5 C"!^zstop" H5 F120 T12000                   ; set Z probe type to switch and the dive height + speeds
-;G31 P500 X0 Y0 Z2.5                                ; set Z probe trigger value, offset and trigger height
-;M557 X15:215 Y15:195 S20                           ; define mesh grid
+M558 P5 C"zstop" H5 F900 T9000                   ; set Z probe type to switch and the dive height + speeds
+G31 P500 X0 Y0 Z0                                ; set Z probe trigger value, offset and trigger height
+M557 X15:215 Y15:195 S20                           ; define mesh grid
 
 ; Heaters
-M308 S0 P"bedtemp" Y"thermistor" T100000 B4092	   ; configure sensor 0 as thermistor on pin bedtemp
-M950 H0 C"fan1" T0                                  ; create bed heater output on bed and map it to sensor 0
+M308 S0 P"bedtemp" Y"thermistor" T100000 B4092 A"Стол"	   ; configure sensor 0 as thermistor on pin bedtemp
+M950 H0 C"fan1" T0                                 ; create bed heater output on fan0 and map it to sensor 0
 M307 H0 B0 R0.316 C587.9 D7.11 S1.00 V0.0          ; disable bang-bang mode for the bed heater and set PWM limit
 M140 H0                                            ; map heated bed to heater 0
-M143 H0 S150 A3                                    ; set temperature limit for heater 0 to 120C
-M308 S1 P"e0temp" Y"pt1000" L0 H0				   ; configure sensor 1 as thermistor on pin e0temp
+M143 H0 S150 A3                                    ; set temperature limit for heater 0 to 150
+M308 S1 P"e0temp" Y"pt1000" L0 H0 A"T0"			   ; configure sensor 1 as thermistor on pin e0temp
 M950 H1 C"e0heat" T1                               ; create nozzle heater output on e0heat and map it to sensor 1
 M307 H1 B0 S1.00                                   ; disable bang-bang mode for heater  and set PWM limit
-M143 H1 S350 A3                                       ; set temperature limit for heater 1 to 280C
-M308 S2 P"e1temp" Y"pt1000" L0 H0				   ; configure sensor 1 as thermistor on pin e1temp
+M143 H1 S350 A3                                    ; set temperature limit for heater 1 to 350
+M308 S2 P"e1temp" Y"pt1000" L0 H0 A"T1"			   ; configure sensor 1 as thermistor on pin e1temp
 M950 H2 C"e1heat" T2                               ; create nozzle heater output on e1heat and map it to sensor 2
 M307 H2 B0 S1.00                                   ; disable bang-bang mode for heater  and set PWM limit
-M143 H2 S350 A3                                    ; set temperature limit for heater 2 to 280C
+M143 H2 S350 A3                                    ; set temperature limit for heater 2 to 350
 
 ; Fans
-M950 F0 C"bed" Q500                               ; create fan 0 on pin fan0 and set its frequency
-M106 P0 S0 H-1                                     ; set fan 0 value. Thermostatic control is turned off
-M950 F1 C"fan0" Q500                               ; create fan 1 on pin fan1 and set its frequency
-M106 P1 S0 H-1                                     ; set fan 1 value. Thermostatic control is turned off
+M950 F0 C"bed" Q7000                               ; create fan 0 on pin bed and set its frequency
+M106 P0 S0 H-1 B0.3 C"Обдув"                       ; set fan 0 value. Thermostatic control is turned off
+M950 F1 C"fan0" Q150			                   ; create fan 1 on pin fan0 and set its frequency
+M106 P1 S0.6 H1:2 T60 C"Помпа"	               ; set fan "pump". Thermostatic control is turned on
 
 ; Tools
 M563 P0 S"E0" D0 H1 F0                             ; define tool 0
@@ -84,15 +81,15 @@ G10 P1 R0 S0                                       ; set initial tool 1 active a
 
 ; Miscellaneous
 M575 P1 S3 B115200                                  ; enable support for tft
-T0                                                 ; select first tool
 M501											   ; load saved parameters from non-volatile memory
 ;G29 S1											   ; load bed mesh
 
+T0                                                 ; select first tool
 M572 D0 S0.02 									   ;PA
-M593 F350 										   ;input shaper
-M207 P0 S0.5 F1500								   ;retract
+;M593 F55 								   		   ;input shaper
+M207 P0 S0.3 F2100								   ;retract
 
 ; power off trigger
-G4 S3 ;pause 2 second for release power button
+G4 S3 ;pause 3 second for release power button
 M950 J1 C"^led1" ;assign button pin, active low
 M581 P1 S0 T2 R2 ;execute trigger2.g file if button pressed

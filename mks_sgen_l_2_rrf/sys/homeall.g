@@ -22,4 +22,4 @@ G90                     ; back to absolute positioning
 M913 X100 Y100		  	; motor currents back to 100%
 
 G92 X0Y0				; set 0
-G92 Z329.5        		; set Z position to axis maximum (you may want to adjust this)
+G92 Z330.15        		; set Z position to axis maximum (you may want to adjust this)

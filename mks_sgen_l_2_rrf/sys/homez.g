@@ -5,8 +5,6 @@
 G91              ; relative positioning
 G1 H1 Z340 F4000 ; move Z up until the endstop is triggered
 G1 Z-5 F360      ; go back a few mm
-G1 H1 Z10 F360  ; move slowly to Z axis endstop once more (second pass)
-G92 Z329.5         ; set Z position to axis maximum (you may want to adjust this)
-; Uncomment the following lines to lift Z after probing
-;G1 Z-5 F200      ; lift Z relative to current position
-G90             ; absolute positioning
+G1 H1 Z10 F360   ; move slowly to Z axis endstop once more (second pass)
+G90              ; absolute positioning
+G92 Z330.15	     ; set Z position to axis maximum (you may want to adjust this)
